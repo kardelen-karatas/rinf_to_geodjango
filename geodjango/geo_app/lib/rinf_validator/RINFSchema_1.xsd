@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="MyDecimal">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\+|-){0,1}\d+((.|,)\d+)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RINFData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="MemberStateCode" >
+            <xs:complexType>
+              <xs:attribute name="Code" type="xs:string" use="required" />
+              <xs:attribute name="Version" type="xs:integer" use="required" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="SectionOfLine">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLIMCode">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="MyDecimal" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLLineIdentification">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLOPStart">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLOPEnd">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLLength">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="MyDecimal" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="SOLNature">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                    <xs:attribute name="OptionalValue" type="xs:string" use="optional"  />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="SOLTrack">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" maxOccurs="1" name="SOLTrackIdentification">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="1" name="SOLTrackDirection">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="xs:string" use="required" />
+                          <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="SOLTrackParameter">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="LocationPoint">
+                              <xs:complexType>
+                                <xs:attribute name="Kilometer" type="MyDecimal" use="required" />
+                                <xs:attribute name="Longitude" type="MyDecimal" use="optional" />
+                                <xs:attribute name="Latitude" type="MyDecimal" use="optional" />
+                                <xs:attribute name="Value" type="xs:string" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="ID" type="xs:string" use="required" />
+                          <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                          <xs:attribute name="Value" type="xs:string" use="optional" />
+                          <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                          <xs:attribute name="Set" type="xs:string" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="SOLTunnel">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="1" name="SOLTunnelIMCode">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="SOLTunnelIdentification">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="xs:string" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="SOLTunnelStart">
+                              <xs:complexType>
+                                <xs:attribute name="Latitude" type="MyDecimal" use="required" />
+                                <xs:attribute name="Longitude" type="MyDecimal" use="required" />
+                                <xs:attribute name="Kilometer" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="SOLTunnelEnd">
+                              <xs:complexType>
+                                <xs:attribute name="Latitude" type="MyDecimal" use="required" />
+                                <xs:attribute name="Longitude" type="MyDecimal" use="required" />
+                                <xs:attribute name="Kilometer" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="SOLTunnelParameter">
+                              <xs:complexType>
+                                <xs:attribute name="ID" type="xs:string" use="required" />
+                                <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                                <xs:attribute name="Value" type="xs:string" use="optional" />
+                                <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                          <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                    <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+              <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="OperationalPoint">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="OPName">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="UniqueOPID">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" /> 
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTafTapCode">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="optional" />
+                    <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="OPType">
+                  <xs:complexType>
+                    <xs:attribute name="Value" type="xs:string" use="required" />
+                    <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" name="OPGeographicLocation">
+                  <xs:complexType>
+                    <xs:attribute name="Longitude" type="MyDecimal" use="required" />
+                    <xs:attribute name="Latitude" type="MyDecimal" use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="OPRailwayLocation">
+                  <xs:complexType>
+                    <xs:attribute name="Kilometer" type="MyDecimal" use="required" />
+                    <xs:attribute name="NationalIdentNum" type="xs:string"  use="required" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrack">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" maxOccurs="1" name="OPTrackIMCode">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="MyDecimal" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="1" name="OPTrackIdentification">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrackParameter">
+                        <xs:complexType>
+                          <xs:attribute name="ID" type="xs:string" use="required" />
+                          <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                          <xs:attribute name="Value" type="xs:string" use="optional" />
+                          <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrackTunnel">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPTrackTunnelIMCode">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPTrackTunnelIdentification">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="xs:string" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrackTunnelParameter">
+                              <xs:complexType>
+                                <xs:attribute name="ID" type="xs:string" use="required" />
+                                <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                                <xs:attribute name="Value" type="xs:string" use="optional" />
+                                <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                          <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrackPlatform">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPTrackPlatformIMCode">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPTrackPlatformIdentification">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="xs:string" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="OPTrackPlatformParameter">
+                              <xs:complexType>
+                                <xs:attribute name="ID" type="xs:string" use="required" />
+                                <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                                <xs:attribute name="Value" type="xs:string" use="optional" />
+                                <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                          <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                    <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="OPSiding">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" maxOccurs="1" name="OPSidingIMCode">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="MyDecimal" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="1" name="OPSidingIdentification">
+                        <xs:complexType>
+                          <xs:attribute name="Value" type="xs:string" use="required" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="OPSidingParameter">
+                        <xs:complexType>
+                          <xs:attribute name="ID" type="xs:string" use="required" />
+                          <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                          <xs:attribute name="Value" type="xs:string" use="optional" />
+                          <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element minOccurs="0" maxOccurs="unbounded" name="OPSidingTunnel">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPSidingTunnelIMCode">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="MyDecimal" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="1" name="OPSidingTunnelIdentification">
+                              <xs:complexType>
+                                <xs:attribute name="Value" type="xs:string" use="required" />
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="OPSidingTunnelParameter">
+                              <xs:complexType>
+                                <xs:attribute name="ID" type="xs:string" use="required" />
+                                <xs:attribute name="IsApplicable" type="xs:string" use="required" />
+                                <xs:attribute name="Value" type="xs:string" use="optional" />
+                                <xs:attribute name="OptionalValue" type="xs:string" use="optional" />
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                          <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+                    <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="ValidityDateStart" type="xs:date" use="optional" />
+              <xs:attribute name="ValidityDateEnd" type="xs:date" use="optional" />
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
