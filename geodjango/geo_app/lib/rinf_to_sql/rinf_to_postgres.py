@@ -6,9 +6,10 @@ import uuid
 import pprint
 from collections import defaultdict
 import json
-#import dateutil
 import re
 import psycopg2
+from shapely.geometry import Point
+from shapely import wkb
 
 # PARAMETER LIST FOR READING FROM RINF XML FILE
 WANTED_PARAMETERS = (
@@ -60,10 +61,10 @@ WANTED_PARAMETERS = (
 
 
 # SQL TEMPLATES
-MS_SQL_TEMPLATE = "INSERT INTO MEMBER (MEM_id, MEM_version) VALUES (%s,%s);"
+MS_SQL_TEMPLATE = "INSERT INTO MEMBER (MEM_id, MEM_version, DOC_id_id) VALUES (%s,%s,%s);"
 LINE_SQL_TEMPLATE = "INSERT INTO LINE (LIN_id, LIN_name, MEM_id) VALUES(%s,%s,%s);"
 OP_TYPE_SQL_TEMPLATE = "INSERT INTO OP_TYPE (OTY_id, OTY_name) SELECT %s,%s WHERE NOT exists (SELECT 1 FROM OP_TYPE WHERE OTY_id = %s);"
-OP_SQL_TEMPLATE = "INSERT INTO OPERATIONAL_POINT (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id_id, MEM_id_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+OP_SQL_TEMPLATE = "INSERT INTO OPERATIONAL_POINT (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, geom, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id_id, MEM_id_id) VALUES (%s, %s, %s, %s, %s, ST_SetSRID(%s::geometry, 4326), %s, %s, %s, %s, %s, %s, %s, %s);"
 SOL_SQL_TEMPLATE = "INSERT INTO SECTION_OF_LINE (SOL_id, SOL_length, SOL_nature, SOL_imcode, SOL_date_start, SOL_date_end, SOL_track_nb, SOL_tunnel_nb, OPP_start, OPP_end, MEM_id, LIN_id ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,(select LIN_id from LINE where LIN_name = %s));"
 PARAMETER_SQL_TEMPLATE = "INSERT INTO PARAMETER (PAR_id,PAR_name,PAR_type) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM PARAMETER where PAR_name = %s);"
 PARAMETER_DEFINITION_SQL_TEMPLATE = "INSERT INTO PARAMETER_DEFINITION (PAR_name, PPV_value, PPV_optional_value, PAR_id) SELECT %s,%s,%s,(select PAR_id from PARAMETER where PAR_name = %s) WHERE NOT exists (SELECT 1 FROM PARAMETER_DEFINITION WHERE PAR_name = %s AND  PPV_value = %s);"
@@ -148,10 +149,10 @@ class RINFExtractor:
 
     def __extract_ms(self, ms):
         MEM_id = ms.get("Code")
-        DOC_id = None
+        DOC_id_id = None
         MEM_version = ms.get("Version")
         self.MEM_id = MEM_id
-        return (MEM_id, MEM_version)
+        return (MEM_id, MEM_version, DOC_id_id)
     
     def __insert_sol(self, sol_extract):
         self.__insert(LINE_SQL_TEMPLATE, sol_extract['line'])
@@ -290,7 +291,7 @@ class RINFExtractor:
         OPP_track_nb = 0
         OPP_tunnel_nb = 0
         OPP_platform_nb = 0
-        #OPP_geom = Point(float(OPP_lon), float(OPP_lat)).wkb_hex
+        geom = Point(float(OPP_lon), float(OPP_lat)).wkb_hex
         # COUNT OP TRACKS
         op_parameter_list = []
         op_parameters_dict = defaultdict(set)
@@ -425,7 +426,7 @@ class RINFExtractor:
             op_parameter_values.append((value, OPP_id, parameter_id,))
         return {
             'op_type': (OTY_id, OTY_name, OTY_id),
-            'op':  (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id, self.__MEM_id),
+            'op':  (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat,geom, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id, self.__MEM_id),
             'parameters': parameters,
             'parameter_definitions': parameter_definitions,
             'parameter_values': op_parameter_values
