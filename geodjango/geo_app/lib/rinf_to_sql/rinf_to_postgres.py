@@ -63,7 +63,7 @@ WANTED_PARAMETERS = (
 MS_SQL_TEMPLATE = "INSERT INTO MEMBER (MEM_id, MEM_version) VALUES (%s,%s);"
 LINE_SQL_TEMPLATE = "INSERT INTO LINE (LIN_id, LIN_name, MEM_id) VALUES(%s,%s,%s);"
 OP_TYPE_SQL_TEMPLATE = "INSERT INTO OP_TYPE (OTY_id, OTY_name) SELECT %s,%s WHERE NOT exists (SELECT 1 FROM OP_TYPE WHERE OTY_id = %s);"
-OP_SQL_TEMPLATE = "INSERT INTO OPERATIONAL_POINT (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, geom, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id_id, MEM_id_id) VALUES (%s, %s, %s, %s, %s, SELECT ST_SetSRID(ST_MakePoint(%s,%s), 4326), %s, %s, %s, %s, %s, %s, %s);"
+OP_SQL_TEMPLATE = "INSERT INTO OPERATIONAL_POINT (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id_id, MEM_id_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
 SOL_SQL_TEMPLATE = "INSERT INTO SECTION_OF_LINE (SOL_id, SOL_length, SOL_nature, SOL_imcode, SOL_date_start, SOL_date_end, SOL_track_nb, SOL_tunnel_nb, OPP_start, OPP_end, MEM_id, LIN_id ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,(select LIN_id from LINE where LIN_name = %s));"
 PARAMETER_SQL_TEMPLATE = "INSERT INTO PARAMETER (PAR_id,PAR_name,PAR_type) SELECT %s,%s,%s WHERE NOT EXISTS (SELECT 1 FROM PARAMETER where PAR_name = %s);"
 PARAMETER_DEFINITION_SQL_TEMPLATE = "INSERT INTO PARAMETER_DEFINITION (PAR_name, PPV_value, PPV_optional_value, PAR_id) SELECT %s,%s,%s,(select PAR_id from PARAMETER where PAR_name = %s) WHERE NOT exists (SELECT 1 FROM PARAMETER_DEFINITION WHERE PAR_name = %s AND  PPV_value = %s);"
@@ -425,7 +425,7 @@ class RINFExtractor:
             op_parameter_values.append((value, OPP_id, parameter_id,))
         return {
             'op_type': (OTY_id, OTY_name, OTY_id),
-            'op':  (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, OPP_lon, OPP_lat, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id, self.__MEM_id),
+            'op':  (OPP_id, OPP_name, OPP_uniqueid, OPP_lon, OPP_lat, OPP_taftapcode, OPP_date_start, OPP_date_end, OPP_track_nb, OPP_tunnel_nb, OPP_platform_nb, OTY_id, self.__MEM_id),
             'parameters': parameters,
             'parameter_definitions': parameter_definitions,
             'parameter_values': op_parameter_values
