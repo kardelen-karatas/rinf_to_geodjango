@@ -1,15 +1,9 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+import uuid
 from django.contrib.gis.db import models
-#from __future__ import unicode_literals
+
 
 class Document(models.Model):
-    doc_id = models.AutoField(primary_key=True)
+    doc_id = models.CharField(max_length=48, primary_key=True, default=uuid.uuid4, editable=False)
     description = models.CharField(max_length=255, blank=True)
     document = models.FileField(upload_to='documents/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -57,8 +51,9 @@ class OperationalPoint(models.Model):
     opp_track_nb = models.IntegerField(blank=True, null=True)
     opp_tunnel_nb = models.IntegerField(blank=True, null=True)
     opp_platform_nb = models.IntegerField(blank=True, null=True)
-    oty_id = models.ForeignKey(OpType, on_delete=models.CASCADE, blank=True, null=True)
-    mem_id = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
+    oty = models.ForeignKey(OpType, on_delete=models.CASCADE, blank=True, null=True)
+    mem = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
+    doc = models.ForeignKey(Document, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -112,8 +107,8 @@ class SectionOfLine(models.Model):
     sol_date_end = models.DateField(blank=True, null=True)
     sol_track_nb = models.IntegerField(blank=True, null=True)
     sol_tunnel_nb = models.IntegerField(blank=True, null=True)
-    opp_start = models.ForeignKey(OperationalPoint, on_delete=models.CASCADE, related_name='opp_start', blank=True, null=True)
-    opp_end = models.ForeignKey(OperationalPoint, on_delete=models.CASCADE, related_name='opp_end', blank=True, null=True)
+    opp_start = models.ForeignKey(OperationalPoint, on_delete=models.CASCADE, related_name='opp_start', blank=True, null=True, to_field='opp_uniqueid')
+    opp_end = models.ForeignKey(OperationalPoint, on_delete=models.CASCADE, related_name='opp_end', blank=True, null=True, to_field='opp_uniqueid')
     mem = models.ForeignKey(Member, on_delete=models.CASCADE, blank=True, null=True)
     lin = models.ForeignKey(Line, on_delete=models.CASCADE, blank=True, null=True)
    

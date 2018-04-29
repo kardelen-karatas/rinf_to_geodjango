@@ -21,15 +21,16 @@ def model_form_upload(request):
             if validator.validate(xml):               
                 new_document = form.save()
                 input_file = request.FILES['document'].open()
+                document_id = new_document.doc_id
                 config = RINFExtractorConfig(
                     'localhost',
                     '5433',
                     'postgres',
                     '12345678',
-                    'geodjango_test'
+                    'dimanche'
                 )
                 rinf_extractor = RINFExtractor(config)
-                rinf_extractor.parse_xml(input_file)
+                rinf_extractor.parse_xml(input_file, document_id)
                 rinf_extractor.close()                  
             else:
                 with open('debug.xml', 'w') as f:

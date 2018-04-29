@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'geodjango.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'geodjango_test',
+        'NAME': 'dimanche',
         'USER': 'postgres',
         'PASSWORD': '12345678',
         'HOST': 'localhost',
